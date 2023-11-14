@@ -2,13 +2,8 @@
 venv/
 
 # Data
-data/external/*
-data/interim/*
-data/processed/*
-
-!data/external/.gitkeep 
-!data/interim/.gitkeep 
-!data/processed/.gitkeep 
+data/*
+!data/raw
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -86,9 +81,6 @@ target/
 
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
-
-# exclude data from source control by default
-/data/
 
 # Mac OS-specific storage files
 .DS_Store
