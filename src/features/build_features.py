@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 
@@ -18,22 +19,25 @@ data_processed["highest_qualification"] = (data_raw["highest_qualification"].rep
 
 # categorizing income groups
 data_processed["gross_income"] = (data_raw["gross_income"].replace({
-    "Above 36,400" : 1, "28,600 to 36,400" : 2, "20,800 to 28,600" : 3, 
-    "15,600 to 20,800" : 4, "10,400 to 15,600" : 5, "5,200 to 10,400" : 6,
-    "2,600 to 5,200" : 7, "Under 2,600" : 8, "Refused" : 9, "Unknown" : 9
+    "Above 36,400" : 8, "28,600 to 36,400" : 7, "20,800 to 28,600" : 6, 
+    "15,600 to 20,800" : 5, "10,400 to 15,600" : 4, "5,200 to 10,400" : 3,
+    "2,600 to 5,200" : 2, "Under 2,600" : 1, "Refused" : 0, "Unknown" : 0
 }))
 
 # copying amounts of cigarettes smoked with NA counted as 0
 data_processed[["amt_weekdays", "amt_weekends"]] = data_raw[["amt_weekdays", "amt_weekends"]].fillna(0)
 
 # normalizing data
-data_processed = round((data_processed - data_processed.min()) / (data_processed.max() - data_processed.min()), ndigits = 4)
+data_processed = round(
+    (data_processed - data_processed.min()) / (data_processed.max() - data_processed.min()),
+    ndigits = 4)
 
 # preparing columns for one-hot encoding
 oh_col_names = ["smoke", "gender", "marital_status", "nationality", "ethnicity", "region", "type"]
 
 # preparing one-hot encoder
-oh_encoder = OneHotEncoder(sparse_output = False)
+oh_encoder = OneHotEncoder(sparse_output = False, drop = 'if_binary', dtype = np.int64, 
+                           feature_name_combiner = lambda input_feature, category : str(category))
 
 # one-hot encoding columns, resetting their indexes and renaming them accordingly
 oh_columns = pd.DataFrame(oh_encoder.fit_transform(data_raw[oh_col_names]))
