@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 # loading the processed data
-data_processed = pd.read_csv("../../data/processed/smoking_processed.csv")
+data_processed = pd.read_csv("../../data/processed/smoking_processed.csv", index_col = 0)
 
 # choosing y and X columns
 y_col = 'Yes'
